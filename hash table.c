@@ -4,9 +4,16 @@
 #include <time.h>
 
 unsigned long hashString(unsigned char*);
-void addString(char**, char*); void removeString(char**, char*);
+void addString(char**, char*); 			void removeString(char**, char*);
+void testPrintRandomStringAndHash(); 	void addString(char**, char*);
+void removeString(char**, char*);
+char** initialise_hash_table();
 
 int main(int argc, char* argv) {
+	testPrintRandomStringAndHash();
+}
+
+void testPrintRandomStringAndHash() {
 	int i; int j;int r;
 	
 	/* Seed for rand() based on time */
@@ -22,10 +29,11 @@ int main(int argc, char* argv) {
 			string[j] = alphabet[r];
 		}
 		printf("%d \n", hashString(string)%100);
+		free(string);
 	}
 }
 
-/* Function creates the hash table - ie array of strings*/
+/* Function creates the hash table - ie array of strings */
 char** initialise_hash_table() {
 	
 }
