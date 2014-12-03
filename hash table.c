@@ -9,6 +9,8 @@ void testPrintRandomStringAndHash(); 	void addString(char**, char*);
 void removeString(char**, char*);
 char** initialise_hash_table();
 
+const SIZE = 100;
+
 int main(int argc, char* argv) {
 	testPrintRandomStringAndHash();
 }
@@ -28,25 +30,38 @@ void testPrintRandomStringAndHash() {
 			r = rand() % 26;
 			string[j] = alphabet[r];
 		}
-		printf("%d \n", hashString(string)%100);
+		printf("string: %s with hash:%d \n", string, hashString(string)%100);
 		free(string);
 	}
 }
 
 /* Function creates the hash table - ie array of strings */
 char** initialise_hash_table() {
-	
+	char** table = malloc(sizeof(char*)*SIZE) /* For development, use 100 buckets */
+	return table;
 }
 
 /* Function calculates hash of a string and then adds it to the table */
 void addString(char** table, char* str) {
-	unsigned long hash = hashString(str);
+	unsigned long hash = hashString(str) % SIZE;
+	int len = 0; int i = 0;
+	while(str[i]) {
+		len++; i++;
+	}
+	len++; /* Extra end line char */
+	/* Check for collisions here */
+	table[hash] = malloc(sizeof(char)*len);
+	strcopy(table[hash], str);
 	
 }
 
 /* Function calculates hash of string and then removes it form table if it exists */
 void removeString(char** table, char* str) {
 	unsigned long hash = hashString(str);
+	
+}
+
+int clearTable(char** table) {
 	
 }
 
