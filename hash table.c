@@ -2,14 +2,16 @@
 #include <stdlib.h>
 #include <math.h>
 #include <time.h>
+#include 'linked_s.h'
 
 unsigned long hashString(unsigned char*);
-void addString(char**, char*); 			void removeString(char**, char*);
-void testPrintRandomStringAndHash(); 	void addString(char**, char*);
-void removeString(char**, char*);
-char** initialise_hash_table();
+unsigned long getHashModK(unsigned char*, long);
+void addString(Node**, char*); 			void removeString(Node**, char*);
+void testPrintRandomStringAndHash(); 	void addString(Node**, char*);
+void removeString(Node**, char*); 
+Node** initialise_hash_table();
 
-const SIZE = 100;
+const SIZE = 100; //using 100 for dev, TODO: normally allow user input?
 
 int main(int argc, char* argv) {
 	testPrintRandomStringAndHash();
@@ -30,38 +32,42 @@ void testPrintRandomStringAndHash() {
 			r = rand() % 26;
 			string[j] = alphabet[r];
 		}
-		printf("string: %s with hash:%d \n", string, hashString(string)%100);
+		printf("string: %s with hash:%d \n", string, getHashModK(str, SIZE));
 		free(string);
 	}
 }
 
 /* Function creates the hash table - ie array of strings */
-char** initialise_hash_table() {
-	char** table = malloc(sizeof(char*)*SIZE) /* For development, use 100 buckets */
+Node** initialise_hash_table() {
+	Node** table = malloc(sizeof(Node*)*SIZE);
 	return table;
 }
 
 /* Function calculates hash of a string and then adds it to the table */
-void addString(char** table, char* str) {
-	unsigned long hash = hashString(str) % SIZE;
-	int len = 0; int i = 0;
-	while(str[i]) {
-		len++; i++;
-	}
-	len++; /* Extra end line char */
-	/* Check for collisions here */
-	table[hash] = malloc(sizeof(char)*len);
-	strcopy(table[hash], str);
+void addString(Node** table, char* str) {
+	unsigned long hash = getHashModK(str, SIZE);
+	Node* bucket = table[hash];
 	
+	/* Found element currently in table here */
+	if (!bucket) { 
+		addItem(bucket, str);
+	/* No element in this bucket - create a linked list */
+	} else{
+		bucket = createList(str);
+	}
 }
 
 /* Function calculates hash of string and then removes it form table if it exists */
-void removeString(char** table, char* str) {
-	unsigned long hash = hashString(str);
+void removeString(Node** table, Node* str) {
+	unsigned long hash = hashString(str -> data);
+	Node* list = table[hash];
 	
+	/* Remove node or str?? */
+	removeNode(list, str);
+	/* TODO: Create remove node with value in linked_list? */
 }
 
-int clearTable(char** table) {
+int clearTable(Node** table) {
 	
 }
 
@@ -78,4 +84,8 @@ unsigned long hashString(unsigned char* str) {
 		hash = ((hash << 5) + hash) + c; 
 	}
 	return (hash & 0xFFFFFF);
+}
+
+unsigned long getHashModK(unsigned char* str, long k) {
+	return (hashString(str)%k);
 }

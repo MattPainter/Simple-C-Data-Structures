@@ -89,13 +89,19 @@ Node* removeNode(Node* badNode) {
 	Node* previousNode = badNode -> previous;
 	Node* nextNode = badNode -> next; 
 	
+	if !(previousNode && nextNode) {
+		cleanList(badNode);
+	}
+	
 	/* Moves pointers to avoid badNode */
 	previousNode -> next = nextNode; 
-	nextNode -> previous = previousNode;
+	nextNode -> previous = previousNode; //if no prev, should go NULL as required. TODO check
 	
 	free(badNode);
 	return(previousNode);
 }
+
+/* TODO: create remove node with value? */
 
 /* Print list of all nodes in structure */
 void printList(Node* list) {
