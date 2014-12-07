@@ -12,9 +12,9 @@ void removeString(Node**, char*); 		void removeHash(Node**, unsigned long);
 void testPrintRandomHashedStrings();
 Node** initialise_hash_table();
 
-const SIZE = 30; //using 100 for dev, TODO: normally allow user input?
+const SIZE = 25; //using 100 for dev, TODO: normally allow user input?
 const testStrLen = 1;
-const testNoWords = 26;
+const testNoWords = 10;
 
 int main(int argc, char* argv) {
 	testPrintRandomStringAndHash();
@@ -39,6 +39,7 @@ void testPrintRandomStringAndHash() {
 			r = rand() % 26;
 			string[j] = alphabet[r];
 		}
+		string[testStrLen] = '\0';
 		printf("string: %s with hash:%d \n", string, getHashModK(string, SIZE));
 		free(string);
 	}
@@ -62,6 +63,7 @@ void testPrintRandomHashedStrings() {
 			r = rand() % 26;
 			string[j] = alphabet[r];
 		}
+		string[testStrLen] = '\0';
 		printf("string: %s with hash:%d \n", string, getHashModK(string, SIZE));
 		addString(table, string);
 		free(string);
@@ -78,7 +80,8 @@ void testPrintRandomHashedStrings() {
 
 /* Function creates the hash table - ie array of strings */
 Node** initialise_hash_table() {
-	Node** table = calloc(SIZE,sizeof(Node*));
+	//Node** table = calloc(SIZE,sizeof(Node*));
+	Node** table = malloc(SIZE*sizeof(Node*));
 	return table;
 }
 
