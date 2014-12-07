@@ -12,10 +12,12 @@ void removeString(Node**, char*); 		void removeHash(Node**, unsigned long);
 void testPrintRandomHashedStrings();
 Node** initialise_hash_table();
 
-const SIZE = 10; //using 100 for dev, TODO: normally allow user input?
+const SIZE = 25; //using 100 for dev, TODO: normally allow user input?
+const testStrLen = 1;
+const testNoWords = 10;
 
 int main(int argc, char* argv) {
-	testPrintRandomHashedStrings();
+	testPrintRandomStringAndHash();
 	printf("Amazing\n");
 }
 
@@ -31,12 +33,13 @@ void testPrintRandomStringAndHash() {
 	char* alphabet = "abcdefghijklmnopqrstuvwxyz";
 	
 	/* Generates random string */
-	for (i = 0; i < 10; i++) {
-		unsigned char* string = malloc(10 * sizeof(char));
-		for (j = 0; j < 10; j++) {
+	for (i = 0; i < testNoWords; i++) {
+		char* string = malloc(testStrLen * sizeof(char) + 1);
+		for (j = 0; j < testStrLen; j++) {
 			r = rand() % 26;
 			string[j] = alphabet[r];
 		}
+		string[testStrLen] = '\0';
 		printf("string: %s with hash:%d \n", string, getHashModK(string, SIZE));
 		free(string);
 	}
@@ -54,32 +57,31 @@ void testPrintRandomHashedStrings() {
 	char* alphabet = "abcdefghijklmnopqrstuvwxyz";
 	
 	/* Generates random string */
-	for (i = 0; i < 5; i++) {
-		unsigned char* string = malloc(10 * sizeof(char));
-		for (j = 0; j < 10; j++) {
+	for (i = 0; i < testNoWords; i++) {
+		unsigned char* string = malloc(testStrLen * sizeof(char) + 1);
+		for (j = 0; j < testStrLen; j++) {
 			r = rand() % 26;
 			string[j] = alphabet[r];
 		}
+		string[testStrLen] = '\0';
 		printf("string: %s with hash:%d \n", string, getHashModK(string, SIZE));
 		addString(table, string);
 		free(string);
 	}
 	
-	printf("\n Now the fun begins \n");
-	
 	for (i = 0; i < SIZE; i++) {
 		printf("%i: \n", i);
 		printList(table[i]);
 		printf("\n");
-	}	
-	
+	} 
 	clearTable(table);
 }
 
 
 /* Function creates the hash table - ie array of strings */
 Node** initialise_hash_table() {
-	Node** table = malloc(sizeof(Node*)*SIZE);
+	//Node** table = calloc(SIZE,sizeof(Node*));
+	Node** table = malloc(SIZE*sizeof(Node*));
 	return table;
 }
 
@@ -98,7 +100,10 @@ void addString(Node** table, char* str) {
 	}
 }
 
-/* Function calculates hash of string and then removes it form table if it exists */
+/* 
+	Function calculates hash of string and then removes it form table if it exists 
+	Removes first if there are duplicates.
+*/
 void removeString(Node** table, char* str) {
 	unsigned long hash = hashString(str);
 	Node* list = table[hash];
@@ -148,7 +153,7 @@ unsigned long hashString(unsigned char* str) {
 	while (c = *str++) {
 		/* hash * 33 + c */
 		hash = ((hash << 5) + hash) + c; 
-	}
+	}	
 	return (hash & 0xFFFFFF);
 }
 
