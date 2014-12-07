@@ -37,6 +37,7 @@ Node* createList(char* data) {
 	if (startPtr -> data == NULL){ 
 		printf("NULL PTR EXCEPTION");
 	}
+	
 	strcpy(startPtr -> data, data);
 	startPtr -> next = NULL;
 	startPtr -> previous = NULL;
@@ -84,12 +85,31 @@ Node* getItemAfter(Node* currentItem) {
 	}
 }
 
+/* 
+	Searches linked list for node with value val 
+	If not found, returns null
+*/
+Node* findNodeWithVal(Node* list, char* val) {
+	/* Navigate to start - could lower time by searching along way */
+	if (list -> previous) {
+		list = list -> previous;
+	}
+	
+	while (list -> next) {
+		if (strcmp(list -> data, val) == 0) {
+			return list;
+		}
+	} 
+	return NULL;
+	
+}
+
 /* Removes a given Node */
 Node* removeNode(Node* badNode) {
 	Node* previousNode = badNode -> previous;
 	Node* nextNode = badNode -> next; 
 	
-	if !(previousNode && nextNode) {
+	if (!(previousNode && nextNode)) {
 		cleanList(badNode);
 	}
 	
@@ -105,6 +125,11 @@ Node* removeNode(Node* badNode) {
 
 /* Print list of all nodes in structure */
 void printList(Node* list) {
+	if (!list) {
+		printf("Can't print null list \n");
+		return;
+	}
+
 	Node* curNode = list;
 	int i = 0;
 	
@@ -126,6 +151,10 @@ void printList(Node* list) {
 /* Attempts to free all allocated memory, run a valgrind on it */
 void cleanList(Node* start) {
 	Node* curNode = start;
+	
+	if (!start) {
+		return;
+	}
 	
 	/* Finds start node if not passed as arg*/
 	while (curNode -> previous != NULL) {
