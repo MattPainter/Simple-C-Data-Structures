@@ -1,39 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-
-typedef int stackT;
-
-typedef struct stack {
-	int head;
-	stackT* stack;
-	int size;
-} stack;
-
-stack* init_stack(int size);
-stackT* stackPop(stack* s);
-int stackPush(stack* s, stackT data);
-stackT* stackPeek(stack* s);
-void stackClear(stack* s);
-
-int main(int argc, char* argv) {
-	int i;
-	stack* s = init_stack(20);
-	for (i = 0; i < 10; i++) {
-		int r = rand() % 100;
-		stackPush(s, r);
-		printf("Rand: %d \n", r);
-	}
-	printf("Peek: %d\n \n", *stackPeek(s));
-	
-	while(stackPeek(s)) {
-		stackT data = *stackPop(s);
-		printf("popped: %d \n", data);
-	}
-	
-	stackClear(s);
-	
-	return 0;
-}
+#include "stack.h"
 
 stack* init_stack(int size) {
 	/* Initialise stack structure */
