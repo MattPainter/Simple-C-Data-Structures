@@ -1,0 +1,10 @@
+Node** initialise_hash_table();
+void addString(Node**, char*); 
+void removeString(Node**, char*);
+int isHashed(Node**, char*);
+void removeHash(Node**, unsigned long);
+int clearTable(Node** table);
+unsigned long hashString(unsigned char*);
+unsigned long getHashModK(unsigned char*, long);			
+void testPrintRandomStringAndHash(); 
+void testPrintRandomHashedStrings();
