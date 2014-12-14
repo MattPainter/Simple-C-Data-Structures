@@ -6,6 +6,6 @@ typedef struct node {
 } Node;
 
 /* Function declarations for functions in linked_list.c */
-void addItem(Node* list, char* data); void cleanList(Node*); void printList(Node*);
-Node* createList(char*); Node* getItemAfter(Node*); Node* removeNode(Node*);
-Node* findNodeWithVal(Node* list, char* val);
+void linkedAddItem(Node* list, char* data); void linkedCleanList(Node*); void linkedPrintList(Node*);
+Node* linkedCreateList(char*); Node* linkedGetItemAfter(Node*); Node* linkedRemoveNode(Node*);
+Node* linkedFindNodeWithVal(Node* list, char* val);

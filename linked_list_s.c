@@ -27,7 +27,7 @@ int main(int argc, char* argv) {
 */
 
 /* Creates the first item in list */
-Node* createList(char* data) {
+Node* linkedCreateList(char* data) {
 	Node* startPtr = (Node*)malloc(sizeof(Node));
 	if (startPtr == NULL) {
 		printf("NULL PTR EXCEPTION");
@@ -46,7 +46,7 @@ Node* createList(char* data) {
 }
 
 /* Adds an item to the list and sets previous pointer to it */
-void addItem(Node* list, char* data) {
+void linkedAddItem(Node* list, char* data) {
 	Node* oldEndPtr = list;
 	Node* newPtr = malloc(sizeof(Node)); 
 	if (newPtr == NULL) {
@@ -77,7 +77,7 @@ void addItem(Node* list, char* data) {
 }
 
 /* Point to item after given */
-Node* getItemAfter(Node* currentItem) {
+Node* linkedGetItemAfter(Node* currentItem) {
 	if (currentItem -> next == NULL) {
 		return NULL; 
 	} else {
@@ -89,7 +89,7 @@ Node* getItemAfter(Node* currentItem) {
 	Searches linked list for node with value val 
 	If not found, returns null
 */
-Node* findNodeWithVal(Node* list, char* val) {
+Node* linkedFindNodeWithVal(Node* list, char* val) {
 	/* Navigate to start - could lower time by searching along way */
 	if (list -> previous) {
 		list = list -> previous;
@@ -105,12 +105,12 @@ Node* findNodeWithVal(Node* list, char* val) {
 }
 
 /* Removes a given Node */
-Node* removeNode(Node* badNode) {
+Node* linkedRemoveNode(Node* badNode) {
 	Node* previousNode = badNode -> previous;
 	Node* nextNode = badNode -> next; 
 	
 	if (!(previousNode && nextNode)) {
-		cleanList(badNode);
+		linkedCleanList(badNode);
 	}
 	
 	/* Moves pointers to avoid badNode */
@@ -124,7 +124,7 @@ Node* removeNode(Node* badNode) {
 /* TODO: create remove node with value? */
 
 /* Print list of all nodes in structure */
-void printList(Node* list) {
+void linkedPrintList(Node* list) {
 	if (!list) {
 		printf("Can't print null list \n");
 		return;
@@ -149,7 +149,7 @@ void printList(Node* list) {
 }
 
 /* Attempts to free all allocated memory, run a valgrind on it */
-void cleanList(Node* start) {
+void linkedCleanList(Node* start) {
 	Node* curNode = start;
 	
 	if (!start) {
@@ -176,6 +176,7 @@ void cleanList(Node* start) {
 }
 
 
+	/* dont need this
 	/* dont need this
 	while (curNode -> previous!= NULL && curNode -> next != NULL) { //should only stop at end??
 		curNode = curNode -> next;
