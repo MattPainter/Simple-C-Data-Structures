@@ -28,7 +28,7 @@ void testPrintRandomStringAndHash() {
 			string[j] = alphabet[r];
 		}
 		string[testStrLen] = '\0';
-		printf("string: %s with hash:%d \n", string, getHashModK(string, SIZE));
+		printf("string: %s with hash:%d \n", string, hashGetHashModK(string, SIZE));
 		free(string);
 	}
 }
@@ -52,17 +52,17 @@ void testPrintRandomHashedStrings() {
 			string[j] = alphabet[r];
 		}
 		string[testStrLen] = '\0';
-		printf("string: %s with hash:%d \n", string, getHashModK(string, SIZE));
-		addString(table, string);
+		printf("string: %s with hash:%d \n", string, hashGetHashModK(string, SIZE));
+		hashAddString(table, string);
 		free(string);
 	}
 	
 	for (i = 0; i < SIZE; i++) {
 		printf("%i: \n", i);
-		printList(table[i]);
+		linkedPrintList(table[i]);
 		printf("\n");
 	} 
-	clearTable(table);
+	hashClearTable(table);
 }
 
 
@@ -74,16 +74,16 @@ Node** initialise_hash_table() {
 }
 
 /* Function calculates hash of a string and then adds it to the table */
-void addString(Node** table, char* str) {
-	unsigned long hash = getHashModK(str, SIZE);
+void hashAddString(Node** table, char* str) {
+	unsigned long hash = hashGetHashModK(str, SIZE);
 	
 	/* Found element currently in table here */
 	if (table[hash]) { 
-		addItem(table[hash], str);
+		linkedAddItem(table[hash], str);
 		printf("Added item to hash %d \n", hash);
 	/* No element in this bucket - create a linked list */
 	} else {
-		table[hash] = createList(str);
+		table[hash] = linkedCreateList(str);
 		printf("Created string %s and list at hash: %d \n", str, hash);
 	}
 }
@@ -92,18 +92,18 @@ void addString(Node** table, char* str) {
 	Function calculates hash of string and then removes it form table if it exists 
 	Removes first if there are duplicates.
 */
-void removeString(Node** table, char* str) {
+void hashRemoveString(Node** table, char* str) {
 	
 	unsigned long hash = hashString(str);
 	Node* list = table[hash];
 	
-	Node* matchNode = findNodeWithVal(list, str);
+	Node* matchNode = linkedFindNodeWithVal(list, str);
 	if (!matchNode) {
 		printf("Couldn't remove node with data: %s \n", str);
 		return;
 	}
 	
-	removeNode(matchNode);
+	linkedRemoveNode(matchNode);
 	/* TODO: Create remove node with value in linked_list? */
 }
 
@@ -111,23 +111,23 @@ void removeString(Node** table, char* str) {
 	Function finds if the table already has this value hashed
 	returns 0 if true, 1 if false
 */
-int isHashed(Node** table, char* str) {
-	unsigned long hash = getHashModK(str, SIZE);
+int hashIsHashed(Node** table, char* str) {
+	unsigned long hash = hashGetHashModK(str, SIZE);
 	Node* list = table[hash];
 	
 	/* Find node with value returns NULL if no matching node found else returns (Node*) */
-	if (findNodeWithVal(list, str)) {
+	if (linkedFindNodeWithVal(list, str)) {
 		return 0;
 	}
 	return 1; 
 }
 
-/* Required? */
-void removeHash(Node** table, unsigned long hash) {
+/* Required? Then add set hash? */
+void hashRemoveHash(Node** table, unsigned long hash) {
 
 }
 
-int clearTable(Node** table) {
+int hashClearTable(Node** table) {
 	int i;
 	
 	/* Failure */
@@ -138,7 +138,7 @@ int clearTable(Node** table) {
 	
 	/* Loops through table cleaning lists when can */
 	for (i = 0; i < SIZE; i++) {
-		cleanList(table[i]);
+		linkedCleanList(table[i]);
 	}
 	
 	/* Success */
@@ -161,6 +161,6 @@ unsigned long hashString(unsigned char* str) {
 	return (hash & 0xFFFFFF);
 }
 
-unsigned long getHashModK(unsigned char* str, long k) {
+unsigned long hashGetHashModK(unsigned char* str, long k) {
 	return (hashString(str)%k);
 }
