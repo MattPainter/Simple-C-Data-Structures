@@ -9,21 +9,8 @@
   gcc linked_list_s.c linked_test_s.c
 */
 
-/* now test via linked_test_s.c via gcc linked_list_s.c linked_test_s.c -o...
-int main(int argc, char* argv) {
-	Node* nextOne;
-	Node* test = createList(3);
-	addItem(test, 4);
-	addItem(test, 5);
-	addItem(test, 7);
-	addItem(test, 1);
-	nextOne = getItemAfter(test);
-	printf("TESTING - %i\n", test -> data);
-	cleanList(nextOne -> next);
-	
-	printf("TESTING - end");
-	return 0;
-}
+/* 
+	Now test via linked_test_s.c via gcc linked_list_s.c linked_test_s.c -o...
 */
 
 /* Creates the first item in list */
@@ -31,11 +18,13 @@ Node* linkedCreateList(char* data) {
 	Node* startPtr = (Node*)malloc(sizeof(Node));
 	if (startPtr == NULL) {
 		printf("NULL PTR EXCEPTION");
+		exit(1);
 	}
 	
 	startPtr -> data = malloc(strlen(data)+1);
 	if (startPtr -> data == NULL){ 
 		printf("NULL PTR EXCEPTION");
+		exit(1);
 	}
 	
 	strcpy(startPtr -> data, data);
@@ -109,16 +98,24 @@ Node* linkedRemoveNode(Node* badNode) {
 	Node* previousNode = badNode -> previous;
 	Node* nextNode = badNode -> next; 
 	
-	if (!(previousNode && nextNode)) {
+	if ((previousNode == NULL && nextNode == NULL)) {
 		linkedCleanList(badNode);
 	}
 	
 	/* Moves pointers to avoid badNode */
-	previousNode -> next = nextNode; 
 	nextNode -> previous = previousNode; //if no prev, should go NULL as required. TODO check
+	if (previousNode) {
+		previousNode -> next = nextNode; 
+		free(badNode);
+		return(previousNode);
+	} else {
+		/* If removing the first node, then this should return the original second node */
+		linkedCopyNode(badNode, nextNode);
+		free(nextNode);
+		return badNode;
+	}
 	
-	free(badNode);
-	return(previousNode);
+	return NULL;
 }
 
 /* TODO: create remove node with value? */
@@ -156,7 +153,7 @@ void linkedCleanList(Node* start) {
 		return;
 	}
 	
-	/* Finds start node if not passed as arg*/
+	/* Finds start node if not passed as arg (start) */
 	while (curNode -> previous != NULL) {
 		curNode = curNode -> previous;
 	}
@@ -175,14 +172,12 @@ void linkedCleanList(Node* start) {
 	
 }
 
+char* linkedPeek(Node* list) {
+	return (list -> data);
+}
 
-	/* dont need this
-	/* dont need this
-	while (curNode -> previous!= NULL && curNode -> next != NULL) { //should only stop at end??
-		curNode = curNode -> next;
-	}
-	
-	stopAt = (curNode -> location); //stops at start index if start node is passed as arg
-	printf("Stop %i\n", stopAt);
-	curNode = curNode -> next; //dont work
-	*/
+void linkedCopyNode(Node* destination, Node* source) {
+	strcpy(destination -> data, source -> data);
+	destination -> previous = source -> previous;
+	destination -> next = source -> next; 
+}

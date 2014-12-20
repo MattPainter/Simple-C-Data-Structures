@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "stack.h"
 
-stack* init_stack(int size) {
+stack* init_stack(int size) { //should use size_t?
 	/* Initialise stack structure */
 	stack* stackPtr = malloc(sizeof(stack));
 	stackPtr -> head = -1;
@@ -12,7 +12,7 @@ stack* init_stack(int size) {
 	return stackPtr;
 }
 
-/* Returns popped element */
+/* Returns ptr to popped element */
 stackT* stackPop(stack* s) {
 	/* Empty stack */
 	if ((s -> head) < 0) {
@@ -30,7 +30,7 @@ stackT* stackPop(stack* s) {
 	}
 }
 
-/* Return 0 of success, 1 on fail? */
+/* Return 0 of success, 1 on fail */
 int stackPush(stack* s, stackT data) {
 	/* Empty stack */
 	if ((s -> head) < 0) {
@@ -49,7 +49,7 @@ int stackPush(stack* s, stackT data) {
 	}
 }
 
-/* Returns top element on stack */
+/* Returns ptr to top element on stack */
 stackT* stackPeek(stack* s) {
 	if ((s -> head) < 0) {
 		return NULL;

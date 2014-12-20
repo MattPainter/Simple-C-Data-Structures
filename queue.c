@@ -2,48 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "linked_s.h"
-
-/* Changes here require changes to included linked lists file */
-typedef char queueT;
-typedef Node Queue;
-
-Queue* init_queue();
-void queuePrintQueue(Queue* queue);
-queueT* queuePeek(Queue* queue);
-void queueEnqueue(Queue* queue, queueT* data);
-Queue* queueDequeue(Queue* queue);
-int queueIsQueued(Queue* queue, queueT* data) ;
-void queueCleanQueue(Queue* queue);
-
-const testStrLen = 1;
-const testNoWords = 10;
-
-int main(int argc, char* argv) {
-	int i, j; long r;
-	Queue* q;
-	
-	char* alphabet = "abcdefghijklmnopqrstuvwxyz";
-	
-	/* Generates random string */
-	for (i = 0; i < testNoWords; i++) {
-		char* string = malloc(testStrLen * sizeof(char) + 1);
-		for (j = 0; j < testStrLen; j++) {
-			r = rand() % 26;
-			string[j] = alphabet[r];
-		}
-		string[testStrLen] = '\0';
-		
-		queueEnqueue(q, string);
-		queueT* temp = queuePeek(q);
-		printf("%s \n", string);
-		free(string);
-	}
-	
-	queuePrintQueue(q);
-	printf("\n");
-	q = queueDequeue(q);
-	queuePrintQueue(q);
-}
+#include "queue.h"
 
 Queue* init_queue() {
 	Queue* nullNode = linkedCreateList(NULL);
