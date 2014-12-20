@@ -9,3 +9,5 @@ typedef struct node {
 void linkedAddItem(Node* list, char* data); void linkedCleanList(Node*); void linkedPrintList(Node*);
 Node* linkedCreateList(char*); Node* linkedGetItemAfter(Node*); Node* linkedRemoveNode(Node*);
 Node* linkedFindNodeWithVal(Node* list, char* val);
+char* linkedPeek(Node* list);
+void linkedCopyNode(Node* destination, Node* source);

@@ -5,6 +5,11 @@
 #include <math.h>
 #include <time.h>
 
+/*
+	Program implements a hash table of strings using the djb2 algorithm for string hashing
+	Compiled using gcc (test_file).c hash_table.c linked_list_s.c
+*/
+
 const SIZE = 25; //using 100 for dev, TODO: normally allow user input?
 const testStrLen = 1;
 const testNoWords = 10;
@@ -68,7 +73,6 @@ void testPrintRandomHashedStrings() {
 
 /* Function creates the hash table - ie array of strings */
 Node** initialise_hash_table() {
-	//Node** table = calloc(SIZE,sizeof(Node*));
 	Node** table = calloc(SIZE,sizeof(Node*));
 	return table;
 }
